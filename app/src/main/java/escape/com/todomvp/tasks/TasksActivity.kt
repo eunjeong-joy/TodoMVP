@@ -9,7 +9,7 @@ import escape.com.todomvp.R
 import escape.com.todomvp.statistics.StatisticsActivity
 import escape.com.todomvp.util.setupActionBar
 
-class TaskActivity : AppCompatActivity() {
+class TasksActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
 
@@ -27,14 +27,12 @@ class TaskActivity : AppCompatActivity() {
             setStatusBarBackground(R.color.colorPrimaryDark)
         }
         setDrawerContent(findViewById(R.id.nav_view))
-
-
     }
 
     private fun setDrawerContent(navigationView: NavigationView) {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             if(menuItem.itemId == R.id.statistics_navigation_menu_item) {
-                val intent = Intent(this@TaskActivity, StatisticsActivity::class.java)
+                val intent = Intent(this@TasksActivity, StatisticsActivity::class.java)
                 startActivity(intent)
             }
             menuItem.isChecked = true
