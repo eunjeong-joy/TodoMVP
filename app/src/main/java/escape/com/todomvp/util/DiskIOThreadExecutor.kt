@@ -6,7 +6,7 @@ import java.util.concurrent.Executors
 class DiskIOThreadExecutor : Executor {
     private val diskIO = Executors.newSingleThreadExecutor()
 
-    override fun execute(command: Runnable?) {
+    override fun execute(command: Runnable) {
         diskIO.execute(command)
     }
 }
