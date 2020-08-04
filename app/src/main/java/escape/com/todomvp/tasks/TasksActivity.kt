@@ -15,7 +15,7 @@ class TasksActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_task)
+        setContentView(R.layout.activity_task)
 
         //Set up the toolbar
         setupActionBar(R.id.toolbar) {
