@@ -25,7 +25,7 @@ class SimpleCountingIdlingResource(val resourceName: String) : IdlingResource {
     fun decrement() {
         val counterVal = counter.getAndDecrement()
         if(counterVal == 0) {
-            resourceCallBack.onTransitionToIdle()
+            resourceCallBack?.onTransitionToIdle()
         }
 
         if(counterVal < 0) {
