@@ -59,7 +59,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/touch_feedback"
                 android:gravity="center"
-                android:text="@string/no_tasks_all"/>
+                android:text="@string/no_tasks_add"/>
         </LinearLayout>
     </RelativeLayout>
 </escape.com.todomvp.tasks.ScrollChildSwipeRefreshLayout>
