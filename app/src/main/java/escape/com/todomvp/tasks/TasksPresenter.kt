@@ -1,7 +1,11 @@
 package escape.com.todomvp.tasks
 
+import android.app.Activity
+import escape.com.todomvp.addedittask.AddEditTaskActivity
 import escape.com.todomvp.data.Task
+import escape.com.todomvp.data.source.TasksDataSource
 import escape.com.todomvp.data.source.TasksRepository
+import escape.com.todomvp.util.EspressoIdlingResource
 
 class TasksPresenter(val tasksRepository: TasksRepository, val tasksView: TasksContract.View) : TasksContract.Presenter {
 
@@ -18,30 +22,112 @@ class TasksPresenter(val tasksRepository: TasksRepository, val tasksView: TasksC
     }
 
     override fun result(requestCode: Int, resultCode: Int) {
-        TODO("Not yet implemented")
+        if(AddEditTaskActivity.REQUEST_ADD_TASK == requestCode
+            && Activity.RESULT_OK == resultCode) {
+            tasksView.showSuccessfullySavedMessage()
+        }
     }
 
     override fun loadTasks(forceUpdate: Boolean) {
-        TODO("Not yet implemented")
+        loadTasks(forceUpdate || firstLoad, true)
+    }
+
+    private fun loadTasks(forceUpdate: Boolean, showLoadingUI: Boolean) {
+        if(showLoadingUI) {
+            tasksView.setLoadingIndicator(true)
+        }
+        if(forceUpdate) {
+            tasksRepository.refreshTasks()
+        }
+
+        EspressoIdlingResource.increment()
+
+        tasksRepository.getTasks(object : TasksDataSource.LoadTasksCallback {
+            override fun onTasksLoaded(tasks: List<Task>) {
+                val tasksToShow = ArrayList<Task>()
+                if(EspressoIdlingResource.countingIdlingResource.isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
+
+                for(task in tasks) {
+                    when(currentFiltering) {
+                        TasksFilterType.ALL_TASKS -> tasksToShow.add(task)
+                        TasksFilterType.ACTIVE_TASKS -> if(task.isActive) {
+                            tasksToShow.add(task)
+                        }
+                        TasksFilterType.COMPLETED_TASKS -> if(task.isCompleted) {
+                            tasksToShow.add(task)
+                        }
+                    }
+                }
+
+                if(!tasksView.isActive) {
+                    return
+                }
+                if(showLoadingUI) {
+                    tasksView.setLoadingIndicator(false)
+                }
+
+                processTasks(tasksToShow)
+            }
+
+            override fun onDataNotAvailable() {
+                if(!tasksView.isActive) {
+                    return
+                }
+                tasksView.showLoadingTasksError()
+            }
+        })
+    }
+
+    private fun processTasks(tasks: List<Task>) {
+        if(tasks.isEmpty()) {
+            processEmptyTasks()
+        } else {
+            tasksView.showTasks(tasks)
+            showFilterLabel()
+        }
+    }
+
+    private fun processEmptyTasks() {
+        when(currentFiltering) {
+            TasksFilterType.ACTIVE_TASKS -> tasksView.showActiveFilterLabel()
+            TasksFilterType.COMPLETED_TASKS -> tasksView.showCompletedFilterLabel()
+            else -> tasksView.showAllFilterLabel()
+        }
+    }
+
+    private fun showFilterLabel() {
+        when(currentFiltering) {
+            TasksFilterType.ACTIVE_TASKS -> tasksView.showNoActiveTasks()
+            TasksFilterType.COMPLETED_TASKS -> tasksView.showNoCompletedTasks()
+            else -> tasksView.showNoTasks()
+        }
     }
 
     override fun addNewTask() {
-        TODO("Not yet implemented")
+        tasksView.showAddTask()
     }
 
     override fun openTaskDetails(requestedTask: Task) {
-        TODO("Not yet implemented")
+        tasksView.showTaskDetailUi(requestedTask.id)
     }
 
     override fun completedTask(completedTask: Task) {
-        TODO("Not yet implemented")
+        tasksRepository.completeTask(completedTask)
+        tasksView.showTaskMarkedComplete()
+        loadTasks(false, false)
     }
 
     override fun activateTask(activateTask: Task) {
-        TODO("Not yet implemented")
+        tasksRepository.activateTask(activateTask)
+        tasksView.showTaskMarkedActive()
+        loadTasks(false, false)
     }
 
     override fun clearCompletedTasks() {
-        TODO("Not yet implemented")
+        tasksRepository.clearCompletedTasks()
+        tasksView.showCompletedTasksClear()
+        loadTasks(false, false)
     }
 }
