@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TodoMVP</string>
+    <string name="add_task">New TO-DO</string>
+    <string name="edit_task">Edit TO-DO</string>
 
     <string name="navigation_view_header_title">TO-DOs</string>
     <string name="list_title">TO-DO List</string>
