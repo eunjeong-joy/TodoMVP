@@ -99,9 +99,9 @@ class TasksPresenter(val tasksRepository: TasksRepository, val tasksView: TasksC
 
     private fun showFilterLabel() {
         when(currentFiltering) {
-            TasksFilterType.ACTIVE_TASKS -> tasksView.showNoActiveTasks()
-            TasksFilterType.COMPLETED_TASKS -> tasksView.showNoCompletedTasks()
-            else -> tasksView.showNoTasks()
+            TasksFilterType.ACTIVE_TASKS -> tasksView.showActiveFilterLabel()
+            TasksFilterType.COMPLETED_TASKS -> tasksView.showCompletedFilterLabel()
+            else -> tasksView.showAllFilterLabel()
         }
     }
 
