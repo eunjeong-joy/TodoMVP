@@ -8,7 +8,7 @@ interface TaskDetailContract {
     interface View : BaseView<Presenter> {
         val isActive: Boolean
 
-        fun setLoadingIndication(active: Boolean)
+        fun setLoadingIndicator(active: Boolean)
 
         fun showMissingTask()
 
