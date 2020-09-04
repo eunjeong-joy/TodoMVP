@@ -142,7 +142,7 @@ class TasksFragment : Fragment(), TasksContract.View {
     override fun showTasks(tasks: List<Task>) {
         listAdapter.tasks = tasks
         tasksView.visibility = View.VISIBLE
-        noTaskAddView.visibility = View.GONE
+        noTasksView.visibility = View.GONE
     }
 
     private fun showNoTasksView(mainText: String, iconRes: Int, showAddView: Boolean) {
