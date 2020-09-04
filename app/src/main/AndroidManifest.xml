@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="escape.com.todomvp">
 
     <application
@@ -17,7 +18,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".statistics.StatisticsActivity"/>
+        <activity
+            android:name=".statistics.StatisticsActivity"
+            android:parentActivityName=".tasks.TasksActivity"
+            tools:ignore="UnusedAttribute">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".tasks.TasksActivity"/>
+        </activity>
         <activity android:name=".addedittask.AddEditTaskActivity"/>
         <activity android:name=".taskDetail.TaskDetailActivity"/>
     </application>
