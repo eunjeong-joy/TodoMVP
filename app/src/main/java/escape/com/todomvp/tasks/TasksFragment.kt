@@ -122,7 +122,7 @@ class TasksFragment : Fragment(), TasksContract.View {
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.active -> presenter.currentFiltering = TasksFilterType.ACTIVE_TASKS
-                    R.id.complete -> presenter.currentFiltering = TasksFilterType.COMPLETED_TASKS
+                    R.id.completed -> presenter.currentFiltering = TasksFilterType.COMPLETED_TASKS
                     else -> presenter.currentFiltering = TasksFilterType.ALL_TASKS
                 }
                 presenter.loadTasks(false)
